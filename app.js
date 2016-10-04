@@ -31,15 +31,9 @@ var usbImg = new ImgDisplay('USB', 'usb.gif');
 var waterCanImg = new ImgDisplay('Watercan', 'water-can.jpg');
 var wineGlassImg = new ImgDisplay('Wine Glass', 'wine-glass.jpg');
 var imgsDisplayingNow = [];
-var previousGames = [];
 var mostRecentGame = [];
 var imgIdEl;
-var imgClickOne;
-var imgClickTwo;
-var imgClickThree;
-var imgClickTrackOne;
-var imgClickTrackTwo;
-var imgClickTrackThree;
+
 
 function ImgDisplay(imgName, path){
   //Properties
@@ -58,7 +52,6 @@ function ImgDisplay(imgName, path){
     imgIdEl.setAttribute('id', this.imgID);
     sectionIdEl.appendChild(imgIdEl);
     this.displayCount += 1;
-    // this.imgClickTrack = document.getElementById(this.imgID).addEventListener('click', handleImgClickTrack);
   };
   imagesArray.push(this);
 
@@ -92,7 +85,15 @@ var makeThreeRandomNumbers = function() {
 
 function handleResultsButton(event){
   event.preventDefault();
-  //List pictures clicked with total clicks, x votes for the imgName
+  console.log('button clicked')
+  var ulIDEl = document.createElement('ol');
+  ulIDEl.textContent = 'Results';
+  sectionIdEl.appendChild(ulIDEl);
+  for (var i = 0; i < imagesArray.length; i++) {
+    var liIDEl = document.createElement('li');
+    liIDEl.textContent = imagesArray[i].totalClicks + ' votes for the ' + imagesArray[i].imgName;
+    ulIDEl.appendChild(liIDEl);
+  };
 };
 
 
@@ -100,9 +101,7 @@ function handleResultsButton(event){
 // Button Appears with this ****NEEDS WORK****
 var checkClickTotal = function(){
   if (imgClicksTotal == 25){
-    imgClickOne.removeEventListener('click', handleImageClick);
-    imgClickTwo.removeEventListener('click', handleImageClick);
-    imgClickThree.removeEventListener('click', handleImageClick);
+    removeEventListener('click', handleImageClick);
     sectionIdEl.textContent = null;
     var resultsButton = document.createElement('button');
     resultsButton.textContent = 'View My Results';
@@ -138,71 +137,34 @@ var gameRender = function(){
   mostRecentGame.push(imgsDisplayingNow[1]);
   mostRecentGame.push(imgsDisplayingNow[2]);
   console.log('Pic rendered');
-
-
   console.log('END OF LOOPS');
   imgDisplayCount += 1;
-  imgClickOne = document.getElementById(imagesArray[imgsDisplayingNow[0]].imgID);
-  imgClickTwo = document.getElementById(imagesArray[imgsDisplayingNow[1]].imgID);
-  imgClickThree = document.getElementById(imagesArray[imgsDisplayingNow[2]].imgID);
-  imgClickTrackOne = document.getElementById(imagesArray[imgsDisplayingNow[0]].imgID);
-  imgClickTrackTwo = document.getElementById(imagesArray[imgsDisplayingNow[1]].imgID);
-  imgClickTrackThree = document.getElementById(imagesArray[imgsDisplayingNow[2]].imgID);
-  imgClickOne.addEventListener('click', handleImageClick);
-  imgClickTwo.addEventListener('click', handleImageClick);
-  imgClickThree.addEventListener('click', handleImageClick);
-  imgClickTrackOne.addEventListener('click', handleImgOneClickTrack);
-  imgClickTrackTwo.addEventListener('click', handleImgTwoClickTrack);
-  imgClickTrackThree.addEventListener('click', handleImgThreeClickTrack);
 };
 
 function handleImageClick(event){
   event.preventDefault();
-  gameRender();
-  imgClickOne = document.getElementById(imagesArray[imgsDisplayingNow[0]].imgID);
-  imgClickTwo = document.getElementById(imagesArray[imgsDisplayingNow[1]].imgID);
-  imgClickThree = document.getElementById(imagesArray[imgsDisplayingNow[2]].imgID);
-  imgClickOne.addEventListener('click', handleImageClick);
-  imgClickTwo.addEventListener('click', handleImageClick);
-  imgClickThree.addEventListener('click', handleImageClick);
+  console.log(event);
+  // sectionIdEl = event.target;
+  if (!event.target.id || event.target.id === 'images'){
+    console.log('Didn\'t click image');
+    return;
+  }
+
+  console.log(event.target.id, 'is the new target');
+
+  for (var i = 0; i < imagesArray.length; i++) {
+    if(event.target.id === imagesArray[i].imgID){
+      imagesArray[i].totalClicks += 1;
+      break;
+    }
+  }
+
   imgClicksTotal += 1;
-  console.log('working');
+  console.log('gameRender');
+  gameRender();
   checkClickTotal();
 };
 
-function handleImgOneClickTrack(event){
-  event.preventDefault();
-  imgClickTrackOne = document.getElementById(imagesArray[imgsDisplayingNow[0]].imgID);
-  imagesArray[imgsDisplayingNow[0]].totalClicks += 1;
-  imgClickTrackOne.addEventListener('click', handleImgOneClickTrack);
-};
-
-function handleImgTwoClickTrack(event){
-  event.preventDefault();
-  imgClickTrackTwo = document.getElementById(imagesArray[imgsDisplayingNow[1]].imgID);
-  imagesArray[imgsDisplayingNow[1]].totalClicks += 1;
-  imgClickTrackTwo.addEventListener('click', handleImgTwoClickTrack);
-};
-
-function handleImgThreeClickTrack(event){
-  event.preventDefault();
-  imgClickTrackThree = document.getElementById(imagesArray[imgsDisplayingNow[2]].imgID);
-  imagesArray[imgsDisplayingNow[2]].totalClicks += 1;
-  imgClickTrackThree.addEventListener('click', handleImgThreeClickTrack);
-};
-
-
 // Event listener for Images
 gameRender();
-imgClickOne = document.getElementById(imagesArray[imgsDisplayingNow[0]].imgID);
-imgClickTwo = document.getElementById(imagesArray[imgsDisplayingNow[1]].imgID);
-imgClickThree = document.getElementById(imagesArray[imgsDisplayingNow[2]].imgID);
-imgClickTrackOne = document.getElementById(imagesArray[imgsDisplayingNow[0]].imgID);
-imgClickTrackTwo = document.getElementById(imagesArray[imgsDisplayingNow[1]].imgID);
-imgClickTrackThree = document.getElementById(imagesArray[imgsDisplayingNow[2]].imgID);
-imgClickOne.addEventListener('click', handleImageClick);
-imgClickTwo.addEventListener('click', handleImageClick);
-imgClickThree.addEventListener('click', handleImageClick);
-imgClickTrackOne.addEventListener('click', handleImgOneClickTrack);
-imgClickTrackTwo.addEventListener('click', handleImgTwoClickTrack);
-imgClickTrackThree.addEventListener('click', handleImgThreeClickTrack);
+addEventListener('click', handleImageClick);
