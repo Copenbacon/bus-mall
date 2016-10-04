@@ -3,8 +3,7 @@
 // Create object to assign to imgs with properties (this.name, this.path, this.clickTrack, this.displayCount, setAttribute(id, this.name);  )
 // create local vars within object for click tracking (this.clickTrack), display count (this.displayCount), total clicks (this.totalClicks)
 
-// var canvas = document.getElementById();
-// var ctx = canvas.getContext('2d');
+var chartDrawn = false;
 var randomNum;
 var imgClicksTotal = 0;
 var imgDisplayCount = 0;
@@ -33,6 +32,14 @@ var wineGlassImg = new ImgDisplay('Wine Glass', 'wine-glass.jpg');
 var imgsDisplayingNow = [];
 var mostRecentGame = [];
 var imgIdEl;
+var labelsArray = [];
+var votesArray = [];
+var chartResults;
+
+function hideChart(){
+  console.log(document.getElementById('resultsChart'));
+  document.getElementById('resultsChart').hidden = true;
+}
 
 
 function ImgDisplay(imgName, path){
@@ -82,21 +89,19 @@ var makeThreeRandomNumbers = function() {
   }
 };
 
-
 function handleResultsButton(event){
   event.preventDefault();
-  console.log('button clicked')
-  var ulIDEl = document.createElement('ol');
-  ulIDEl.textContent = 'Results';
-  sectionIdEl.appendChild(ulIDEl);
-  for (var i = 0; i < imagesArray.length; i++) {
-    var liIDEl = document.createElement('li');
-    liIDEl.textContent = imagesArray[i].totalClicks + ' votes for the ' + imagesArray[i].imgName;
-    ulIDEl.appendChild(liIDEl);
-  };
+  console.log('button clicked');
+  // var ulIDEl = document.createElement('ol');
+  // ulIDEl.textContent = 'Results';
+  // sectionIdEl.appendChild(ulIDEl);
+  // for (var i = 0; i < imagesArray.length; i++) {
+  //   var liIDEl = document.createElement('li');
+  //   liIDEl.textContent = imagesArray[i].totalClicks + ' votes for the ' + imagesArray[i].imgName;
+  //   ulIDEl.appendChild(liIDEl);
+  // };
+  drawResultsChart();
 };
-
-
 
 // Button Appears with this ****NEEDS WORK****
 var checkClickTotal = function(){
@@ -161,10 +166,56 @@ function handleImageClick(event){
 
   imgClicksTotal += 1;
   console.log('gameRender');
+  hideChart();
   gameRender();
   checkClickTotal();
+  updateLabelsAndVotesArrays();
 };
 
 // Event listener for Images
 gameRender();
 addEventListener('click', handleImageClick);
+hideChart();
+
+function updateLabelsAndVotesArrays() {
+  for (var i = 0; i < imagesArray.length; i++) {
+    labelsArray[i] = imagesArray[i].imgName;
+    votesArray[i] = imagesArray[i].totalClicks;
+  }
+}
+
+var data = {
+  labels: labelsArray,
+  datasets: [
+    {
+      label: 'Results',
+      data: votesArray,
+      backgroundColor: [
+        'rgb(187, 183, 32)',
+        'rgb(85, 157, 36)',
+        'rgb(133, 40, 187)'
+      ],
+      borderColor: 'rgb(0, 0, 0)',
+      borderWidth: 1
+    }
+  ]
+};
+
+function drawResultsChart (){
+  var canvas = document.getElementById('resultsChart').getContext('2d');
+  chartResults = new Chart (canvas,{
+
+    type: 'bar',
+    data: data,
+    options: {
+      responsive: false
+    },
+    scales: [{
+      ticks: {
+        beginAtZero:true
+      }
+    }]
+  }
+);
+  chartDrawn = true;
+}
