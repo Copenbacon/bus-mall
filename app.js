@@ -66,22 +66,68 @@ var randomNumGen = function(){
   console.log(randomNum);
 };
 
+
+function handleResultsButton(event){
+  event.preventDefault();
+  //List pictures clicked with total clicks, x votes for the imgName
+}
+
+// Button Appears with this ****NEEDS WORK****
+var checkClickTotal = function(){
+  if (imgClicksTotal == 25){
+    imgClickOne.removeEventListener('click', handleImageClick);
+    imgClickTwo.removeEventListener('click', handleImageClick);
+    imgClickThree.removeEventListener('click', handleImageClick);
+    sectionIdEl.textContent = null;
+    var resultsButton = document.createElement('button');
+    resultsButton.textContent = 'View My Results';
+    resultsButton.setAttribute('id','results-button');
+    sectionIdEl.appendChild(resultsButton);
+    console.log('events removed and button listed')
+    resultsButton.addEventListener('click', handleResultsButton);
+  };
+};
+
 var gameRender = function(){
   sectionIdEl.textContent = null;
   imgsDisplayingNow = [];
-  for(var i = 0; i < 3; i++){
+  for(var i = 0; imgsDisplayingNow.length <= 3; i++){
     randomNumGen();
+    console.log('randomNumGen lines 73');
     for(var j = 0; j < 3; j++){
       while(imgsDisplayingNow[j] === imagesArray[randomNum]){
-        console.log(imagesArray[randomNum]);
+        console.log('imgsDisplayingNow = imagesArray lines 76');
         randomNumGen();
-        imgsDisplayingNow.splice(i,1);
+        imgsDisplayingNow.splice(j,1);
+        console.log(imagesArray[randomNum] + 'lines 78-9');
       };
     };
-    imagesArray[randomNum].render();
+
+    if (previousGames.length >= 1){
+      console.log('if loop ran');
+      console.log('previousGamesLength >= 1 lines 84');
+      for (var k = 0; k < 3; k++){
+        while (imagesArray[randomNum] === previousGames[(previousGames.length - 1)][k]){
+          console.log('checking against previous game');
+          randomNumGen();
+          imgsDisplayingNow.splice(k,1);
+          console.log('randomNumGen line 90');
+        };
+      };
+    };
+
     imgsDisplayingNow.push(imagesArray[randomNum]);
+
+    console.log('Pic rendered');
   };
+
+  for(var i = 0; i < 3; i++){
+    imgsDisplayingNow[i].render();
+  }
+
   previousGames.push(imgsDisplayingNow);
+  console.log('END OF LOOPS');
+  imgDisplayCount += 1;
   imgClickOne = document.getElementById(imgsDisplayingNow[0].imgID);
   imgClickTwo = document.getElementById(imgsDisplayingNow[1].imgID);
   imgClickThree = document.getElementById(imgsDisplayingNow[2].imgID);
@@ -97,18 +143,10 @@ function handleImageClick(event){
   imgClickTwo.addEventListener('click', handleImageClick);
   imgClickThree.addEventListener('click', handleImageClick);
   imgClicksTotal += 1;
-
   console.log("working");
+  checkClickTotal();
 }
 
-// Button Appears with this ****NEEDS WORK****
-if(imgClicksTotal >= 2){
-  var resultsButton = document.createElement('button');
-  resultsButton.textContent = 'View My Results';
-  resultsButton.setAttribute('id','results-button');
-  sectionIdEl.textContent = null;
-  sectionIdEl.appendChild(resultsButton);
-};
 
 // Event listener for Images
 gameRender();
