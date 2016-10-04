@@ -190,11 +190,7 @@ var data = {
     {
       label: 'Results',
       data: votesArray,
-      backgroundColor: [
-        'rgb(187, 183, 32)',
-        'rgb(85, 157, 36)',
-        'rgb(133, 40, 187)'
-      ],
+      backgroundColor: 'rgb(244, 88, 1)',
       borderColor: 'rgb(0, 0, 0)',
       borderWidth: 1
     }
