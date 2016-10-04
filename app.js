@@ -4,10 +4,11 @@
 // create local vars within object for click tracking (this.clickTrack), display count (this.displayCount), total clicks (this.totalClicks)
 // Event handler for clicking on the image that increments each of the above (if totalClicks === 25, removeEventHandler)
 
+
 var randomNum;
 var imgClicksTotal = 0;
 var imgDisplayCount = 0;
-var divIdEl = document.getElementById('images');
+var sectionIdEl = document.getElementById('images');
 var imagesArray = [];
 var bagImg = new ImgDisplay('Bag', 'bag.jpg');
 var bananaImg = new ImgDisplay('Banana', 'banana.jpg');
@@ -30,6 +31,8 @@ var usbImg = new ImgDisplay('USB', 'usb.gif');
 var waterCanImg = new ImgDisplay('Watercan', 'water-can.jpg');
 var wineGlassImg = new ImgDisplay('Wine Glass', 'wine-glass.jpg');
 var imgsDisplayingNow = [];
+var previousGames = [];
+var imgIdEl;
 
 function ImgDisplay(imgName, path){
   //Properties
@@ -42,11 +45,12 @@ function ImgDisplay(imgName, path){
 
   //Methods
   this.render = function() {
-    var imgIdEl = document.createElement('img');
-    imgIdEl.setAttribute('id', this.imgID);
+    imgIdEl = document.createElement('img');
     imgIdEl.setAttribute('src', this.path);
     imgIdEl.setAttribute('width', '300px');
-    divIdEl.appendChild(imgIdEl);
+    imgIdEl.setAttribute('id', this.imgID);
+    sectionIdEl.appendChild(imgIdEl);
+    this.displayCount += 1;
   };
   imagesArray.push(this);
 };
@@ -56,17 +60,55 @@ var randomNumGen = function(){
   console.log(randomNum);
 };
 
-for(var i = 0; i < 3; i++){
-  randomNumGen();
-  for(var j = 0; j < imgsDisplayingNow.length; j++){
-    while(imagesArray[randomNum] === imgsDisplayingNow[j]){
-      console.log(imagesArray[randomNum]);
-      console.log(imgsDisplayingNow[i]);
-      imgsDisplayingNow.pop();
-      j = j - 1;
-      randomNumGen();
+var gameRender = function(){
+  sectionIdEl.textContent = null;
+  imgsDisplayingNow = [];
+  for(var i = 0; i < 3; i++){
+    randomNumGen();
+    for(var j = 0; j < 3; j++){
+      while(imgsDisplayingNow[j] === imagesArray[randomNum]){
+        console.log(imagesArray[randomNum]);
+        randomNumGen();
+        imgsDisplayingNow.splice(i,1);
+      };
     };
+    imagesArray[randomNum].render();
+    imgsDisplayingNow.push(imagesArray[randomNum]);
   };
-  imgsDisplayingNow.push(imagesArray[randomNum]);
-  imagesArray[randomNum].render();
+  previousGames.push(imgsDisplayingNow);
+  imgClickOne = document.getElementById(imgsDisplayingNow[0].imgID);
+  imgClickTwo = document.getElementById(imgsDisplayingNow[1].imgID);
+  imgClickThree = document.getElementById(imgsDisplayingNow[2].imgID);
 };
+
+function handleImageClick(event){
+  event.preventDefault();
+  gameRender();
+  // var imgClickOne = document.getElementById(imgsDisplayingNow[0].imgID);
+  // var imgClickTwo = document.getElementById(imgsDisplayingNow[1].imgID);
+  // var imgClickThree = document.getElementById(imgsDisplayingNow[2].imgID);
+  imgClickOne.addEventListener('click', handleImageClick);
+  imgClickTwo.addEventListener('click', handleImageClick);
+  imgClickThree.addEventListener('click', handleImageClick);
+  imgClicksTotal += 1;
+
+  console.log("working");
+}
+
+// Button Appears with this ****NEEDS WORK****
+if(imgClicksTotal >= 2){
+  var resultsButton = document.createElement('button');
+  resultsButton.textContent = 'View My Results';
+  resultsButton.setAttribute('id','results-button');
+  sectionIdEl.textContent = null;
+  sectionIdEl.appendChild(resultsButton);
+};
+
+// Event listener for Images
+gameRender();
+var imgClickOne = document.getElementById(imgsDisplayingNow[0].imgID);
+var imgClickTwo = document.getElementById(imgsDisplayingNow[1].imgID);
+var imgClickThree = document.getElementById(imgsDisplayingNow[2].imgID);
+imgClickOne.addEventListener('click', handleImageClick);
+imgClickTwo.addEventListener('click', handleImageClick);
+imgClickThree.addEventListener('click', handleImageClick);
