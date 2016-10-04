@@ -39,7 +39,6 @@ function ImgDisplay(imgName, path){
   this.imgName = imgName;
   this.path = 'imgs/' + path;
   this.imgID = path.replace('.','');
-  this.clickTrack = 0;
   this.displayCount = 0;
   this.totalClicks = 0;
 
@@ -51,8 +50,15 @@ function ImgDisplay(imgName, path){
     imgIdEl.setAttribute('id', this.imgID);
     sectionIdEl.appendChild(imgIdEl);
     this.displayCount += 1;
+    this.imgClickTrack = document.getElementById(this.imgID);
+    this.imgClickTrack.addEventListener('click', handleImgClickTrack);
   };
   imagesArray.push(this);
+
+  function handleImgClickTrack (event){
+    event.preventDefault();
+    this.totalClicks = this.totalClicks + 1;
+  }
 };
 
 var randomNumGen = function(){
