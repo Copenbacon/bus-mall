@@ -9,26 +9,6 @@ var imgClicksTotal = 0;
 var imgDisplayCount = 0;
 var sectionIdEl = document.getElementById('images');
 var imagesArray = [];
-var bagImg = new ImgDisplay('Bag', 'bag.jpg');
-var bananaImg = new ImgDisplay('Banana', 'banana.jpg');
-var bathroomImg = new ImgDisplay('Bathroom', 'bathroom.jpg');
-var bootsImg = new ImgDisplay('Boots', 'boots.jpg');
-var breakfastImg = new ImgDisplay('Breakfast', 'breakfast.jpg');
-var bubblegumImg = new ImgDisplay('Bubblegum', 'bubblegum.jpg');
-var chairImg = new ImgDisplay('Chair', 'chair.jpg');
-var cthuluImg = new ImgDisplay('Cthulu', 'cthulhu.jpg');
-var dogDuckImg = new ImgDisplay('Dog Duck', 'dog-duck.jpg');
-var dragonImg = new ImgDisplay('Dragon', 'dragon.jpg');
-var penImg = new ImgDisplay('Pen', 'pen.jpg');
-var petSweepImg = new ImgDisplay('Pet Sweep', 'pet-sweep.jpg');
-var scissorsImg = new ImgDisplay('Scissors', 'scissors.jpg');
-var sharkImg = new ImgDisplay('Shark', 'shark.jpg');
-var sweepImg = new ImgDisplay('Sweep', 'sweep.png');
-var tauntaunImg = new ImgDisplay('Tauntaun', 'tauntaun.jpg');
-var unicornImg = new ImgDisplay('Unicorn', 'unicorn.jpg');
-var usbImg = new ImgDisplay('USB', 'usb.gif');
-var waterCanImg = new ImgDisplay('Watercan', 'water-can.jpg');
-var wineGlassImg = new ImgDisplay('Wine Glass', 'wine-glass.jpg');
 var imgsDisplayingNow = [];
 var mostRecentGame = [];
 var imgIdEl;
@@ -36,19 +16,55 @@ var labelsArray = [];
 var votesArray = [];
 var chartResults;
 
+
+if(localStorage.getItem('savedImages')){
+  var loadImages = localStorage.getItem('savedImages');
+  var newImageSources = JSON.parse(loadImages);
+  console.log('newImageSources: ', newImageSources);
+  for (var i = 0; i < newImageSources.length; i++) {
+    var currentImage = newImageSources[i];
+    new ImgDisplay(currentImage.imgName, currentImage.path, currentImage.displayCount, currentImage.totalClicks);
+  }
+
+
+} else {
+  console.log('nothing found in localStorage');
+  var bagImg = new ImgDisplay('Bag', 'imgs/bag.jpg');
+  var bananaImg = new ImgDisplay('Banana', 'imgs/banana.jpg');
+  var bathroomImg = new ImgDisplay('Bathroom', 'imgs/bathroom.jpg');
+  var bootsImg = new ImgDisplay('Boots', 'imgs/boots.jpg');
+  var breakfastImg = new ImgDisplay('Breakfast', 'imgs/breakfast.jpg');
+  var bubblegumImg = new ImgDisplay('Bubblegum', 'imgs/bubblegum.jpg');
+  var chairImg = new ImgDisplay('Chair', 'imgs/chair.jpg');
+  var cthuluImg = new ImgDisplay('Cthulu', 'imgs/cthulhu.jpg');
+  var dogDuckImg = new ImgDisplay('Dog Duck', 'imgs/dog-duck.jpg');
+  var dragonImg = new ImgDisplay('Dragon', 'imgs/dragon.jpg');
+  var penImg = new ImgDisplay('Pen', 'imgs/pen.jpg');
+  var petSweepImg = new ImgDisplay('Pet Sweep', 'imgs/pet-sweep.jpg');
+  var scissorsImg = new ImgDisplay('Scissors', 'imgs/scissors.jpg');
+  var sharkImg = new ImgDisplay('Shark', 'imgs/shark.jpg');
+  var sweepImg = new ImgDisplay('Sweep', 'imgs/sweep.png');
+  var tauntaunImg = new ImgDisplay('Tauntaun', 'imgs/tauntaun.jpg');
+  var unicornImg = new ImgDisplay('Unicorn', 'imgs/unicorn.jpg');
+  var usbImg = new ImgDisplay('USB', 'imgs/usb.gif');
+  var waterCanImg = new ImgDisplay('Watercan', 'imgs/water-can.jpg');
+  var wineGlassImg = new ImgDisplay('Wine Glass', 'imgs/wine-glass.jpg');
+}
+console.log('imagesArray: \n', imagesArray);
+
 function hideChart(){
   console.log(document.getElementById('resultsChart'));
   document.getElementById('resultsChart').hidden = true;
 }
 
 
-function ImgDisplay(imgName, path){
+function ImgDisplay(imgName, path, displayCount, totalClicks){
   //Properties
   this.imgName = imgName;
-  this.path = 'imgs/' + path;
-  this.imgID = path.replace('.','');
-  this.displayCount = 0;
-  this.totalClicks = 0;
+  this.path = path;
+  this.imgID = imgName.replace(' ','');
+  this.displayCount = displayCount || 0;
+  this.totalClicks = totalClicks || 0;
 
 
   //Methods
@@ -100,6 +116,7 @@ function handleResultsButton(event){
   //   liIDEl.textContent = imagesArray[i].totalClicks + ' votes for the ' + imagesArray[i].imgName;
   //   ulIDEl.appendChild(liIDEl);
   // };
+  saveGame();
   drawResultsChart();
 };
 
@@ -215,3 +232,14 @@ function drawResultsChart (){
 );
   chartDrawn = true;
 }
+
+
+//
+// } else {
+//   saveGame();
+// };
+
+function saveGame(){
+  var imagesStringified = JSON.stringify(imagesArray);
+  localStorage.setItem('savedImages', imagesStringified);
+};
