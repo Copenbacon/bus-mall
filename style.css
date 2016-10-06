@@ -1,3 +1,25 @@
 canvas {
   border: 5px solid black;
 }
+
+body {
+  width: 950px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  font-family: fantasy;
+  color: rgb(244, 156, 26);
+}
+
+#results-button {
+  margin: auto;
+  background-color: black;
+  color: white;
+  font: sans-serif;
+  height: 50px;
+  width: 85px;
+  border-radius: 10px;
+  font-weight: bold;
+}
