@@ -111,9 +111,12 @@ function handleResultsButton(event){
   event.preventDefault();
   saveGame();
   console.log('button clicked');
+  sectionIdEl.textContent = null;
   var ulIDEl = document.createElement('ol');
-  ulIDEl.textContent = 'Results';
   sectionIdEl.appendChild(ulIDEl);
+  var LHIdEL = document.createElement('h2');
+  LHIdEL.textContent = 'Results';
+  ulIDEl.appendChild(LHIdEL);
   for (var i = 0; i < imagesArray.length; i++) {
     var liIDEl = document.createElement('li');
     numOne = imagesArray[i].totalClicks;
@@ -245,12 +248,6 @@ function drawResultsChart (){
 );
   chartDrawn = true;
 }
-
-
-//
-// } else {
-//   saveGame();
-// };
 
 function saveGame(){
   var imagesStringified = JSON.stringify(imagesArray);
