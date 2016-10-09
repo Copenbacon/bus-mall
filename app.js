@@ -129,7 +129,7 @@ var checkClickTotal = function(){
     resultsButton.textContent = 'View My Results';
     resultsButton.setAttribute('id','results-button');
     sectionIdEl.appendChild(resultsButton);
-    console.log('events removed and button listed')
+    console.log('events removed and button listed');
     resultsButton.addEventListener('click', handleResultsButton);
   };
 };
@@ -214,6 +214,8 @@ var data = {
   ]
 };
 
+Chart.defaults.global.defaultFontColor = '#FFF';
+
 function drawResultsChart (){
   var canvas = document.getElementById('resultsChart').getContext('2d');
   chartResults = new Chart (canvas,{
@@ -221,7 +223,7 @@ function drawResultsChart (){
     type: 'bar',
     data: data,
     options: {
-      responsive: false
+      responsive: true
     },
     scales: [{
       ticks: {
