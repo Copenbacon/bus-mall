@@ -21,17 +21,40 @@ canvas {
 section {
   border: 3px solid rgb(0, 78, 1);
   background-color: rgba(224, 74, 9, 0.74);
-  width: 912px;
-  height: 255px;
+  width: 96%;
+  height: 250px;
   margin: auto;
+}
+
+ol {
+  height: 89%;
+  overflow-y: scroll;
+  margin-left: 10%;
+}
+
+h2 {
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 28px;
+  text-align: center;
+  margin-right: 12%;
+}
+
+li {
+  text-align: left;
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 16px;
+  padding-left: 2%;
+  padding-top: 0.5%;
 }
 
 img {
   border: 2px dotted rgb(223, 90, 25);
   /*width: 32.9%;*/
-  height: 250px;
+  height: 98.5%;
   margin: auto;
-  display: inline-flex;
+  display: inline-block;
 }
 
 body {
@@ -46,7 +69,10 @@ h1 {
 }
 
 #results-button {
-  margin: auto;
+  margin-top: 11%;
+  margin-bottom: 11%;
+  margin-left: 46%;
+  margin-right: 50%;
   background-color: black;
   color: white;
   font: sans-serif;
