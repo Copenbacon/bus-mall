@@ -129,7 +129,7 @@ var checkClickTotal = function(){
     resultsButton.textContent = 'View My Results';
     resultsButton.setAttribute('id','results-button');
     sectionIdEl.appendChild(resultsButton);
-    console.log('events removed and button listed')
+    console.log('events removed and button listed');
     resultsButton.addEventListener('click', handleResultsButton);
   };
 };
