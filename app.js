@@ -214,6 +214,8 @@ var data = {
   ]
 };
 
+Chart.defaults.global.defaultFontColor = '#FFF';
+
 function drawResultsChart (){
   var canvas = document.getElementById('resultsChart').getContext('2d');
   chartResults = new Chart (canvas,{
@@ -221,7 +223,7 @@ function drawResultsChart (){
     type: 'bar',
     data: data,
     options: {
-      responsive: false
+      responsive: true
     },
     scales: [{
       ticks: {
