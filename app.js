@@ -25,8 +25,6 @@ if(localStorage.getItem('savedImages')){
     var currentImage = newImageSources[i];
     new ImgDisplay(currentImage.imgName, currentImage.path, currentImage.displayCount, currentImage.totalClicks);
   }
-
-
 } else {
   console.log('nothing found in localStorage');
   var bagImg = new ImgDisplay('Bag', 'imgs/bag.jpg');
@@ -62,7 +60,7 @@ function ImgDisplay(imgName, path, displayCount, totalClicks){
   //Properties
   this.imgName = imgName;
   this.path = path;
-  this.imgID = imgName.replace(' ','');
+  this.imgID = imgName.replace('','');
   this.displayCount = displayCount || 0;
   this.totalClicks = totalClicks || 0;
 
@@ -105,18 +103,31 @@ var makeThreeRandomNumbers = function() {
   }
 };
 
+var numOne = 0;
+var numTwo = 0;
+var percentageOfClicks = 0;
+
 function handleResultsButton(event){
   event.preventDefault();
-  console.log('button clicked');
-  // var ulIDEl = document.createElement('ol');
-  // ulIDEl.textContent = 'Results';
-  // sectionIdEl.appendChild(ulIDEl);
-  // for (var i = 0; i < imagesArray.length; i++) {
-  //   var liIDEl = document.createElement('li');
-  //   liIDEl.textContent = imagesArray[i].totalClicks + ' votes for the ' + imagesArray[i].imgName;
-  //   ulIDEl.appendChild(liIDEl);
-  // };
   saveGame();
+  console.log('button clicked');
+  var ulIDEl = document.createElement('ol');
+  ulIDEl.textContent = 'Results';
+  sectionIdEl.appendChild(ulIDEl);
+  for (var i = 0; i < imagesArray.length; i++) {
+    var liIDEl = document.createElement('li');
+    numOne = imagesArray[i].totalClicks;
+    numTwo = imagesArray[i].displayCount;
+    percentageOfClicks = parseFloat(numOne / numTwo) * 100;
+    var p = percentageOfClicks.toFixed(2);
+    console.log(percentageOfClicks, 'percentage of clicks');
+    console.log(imagesArray[i].totalClicks);
+    console.log(imagesArray[i].displayCount);
+    console.log(numOne);
+    console.log(numTwo);
+    liIDEl.textContent = imagesArray[i].totalClicks + ' votes for the ' + imagesArray[i].imgName + ' and it was displayed ' + imagesArray[i].displayCount + ' total times, resulting in a ' + p + '% efficiency.';
+    ulIDEl.appendChild(liIDEl);
+  };
   drawResultsChart();
 };
 
